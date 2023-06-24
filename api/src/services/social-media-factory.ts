@@ -3,7 +3,7 @@ import { SocialMediaEnum } from "./enums";
 import { TinderClient } from "./social_media_services";
 
 export class SocialMediaFactory {
-    static getAIProvider(serviceName: SocialMediaEnum): SocialMediaServiceWrapper {
+    static getSocialMediaService(serviceName: SocialMediaEnum): SocialMediaServiceWrapper {
         let service;
         if (serviceName === SocialMediaEnum.TINDER) {
             service = TinderClient;
