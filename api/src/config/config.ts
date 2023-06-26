@@ -12,5 +12,10 @@ export default {
       SESSION: "",
     },
   },
+  DB: {
+    REDIS: {
+      URL: 'redis://localhost:6379'
+    }
+  },
   BASE_MESSAGE: ""
 };
