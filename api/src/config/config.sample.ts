@@ -9,8 +9,15 @@ export default {
   },
   SOCIAL_MEDIA_SERVICES: {
     TINDER: {
+      url: "https://api.gotinder.com",
       SESSION: "",
+      USER_ID: ""
     },
+  },
+  DB: {
+    REDIS: {
+      URL: 'redis://localhost:6379'
+    }
   },
   BASE_MESSAGE: ""
 };

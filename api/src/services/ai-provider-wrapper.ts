@@ -6,7 +6,7 @@ export class AIProviderWrapper implements IAIProvider {
   constructor(provider: IAIProvider) {
     this.provider = provider;
   }
-
+  // TODO - ADICIONAR OS METODOS NA INTERFACE ANTES DE CRIAR AQ
   async ask(question: string): Promise<string> {
     return await this.provider.ask(question);
   }
