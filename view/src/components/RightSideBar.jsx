@@ -1,60 +1,24 @@
 import { useState } from "react";
 import { SendOutlined, PictureOutlined } from "@ant-design/icons";
+import Recommendation from "./Recommendation";
 
 const RightSideBar = (props) => {
   const { chatId, creds } = props;
-
-  const loadChat = (event) => {};
-
+  const recommendations = [
+    { recommendation: "rec1" },
+    { recommendation: "rec2" },
+    { recommendation: "rec3" },
+    { recommendation: "rec4" },
+  ];
   return (
     <aside class="right-side">
       <div class="user-head">
         <h1>Sugestions</h1>
       </div>
-
       <ul class="chat-list">
-        <li>
-          <a href="#chat-room.html">
-            Jonathan Smith
-            <span class="text-muted">3h:22m</span>
-          </a>
-        </li>
-        <li>
-          <a href="#chat-room.html">
-            Jhone Due
-            <span class="text-muted">1h:2m</span>
-          </a>
-        </li>
-        <li>
-          <a href="#chat-room.html">
-            Cendy Andrianto
-            <span class="text-muted">2h:32m</span>
-          </a>
-        </li>
-        <li>
-          <a href="#chat-room.html">
-            Surya Nug
-            <span class="text-muted">3h:22m</span>
-          </a>
-        </li>
-        <li>
-          <a href="#chat-room.html">
-            Monke Lutfy
-            <span class="text-muted">1h:12m</span>
-          </a>
-        </li>
-        <li>
-          <a href="#chat-room.html">
-            Steve Jobs
-            {/* <!--<span class="text-muted">3h:22m</span>--> */}
-          </a>
-        </li>
-        <li>
-          <a href="#chat-room.html">
-            Jonathan Smith
-            {/* <!--<span class="text-muted">3h:22m</span>--> */}
-          </a>
-        </li>
+        {recommendations.map((el) => (
+          <Recommendation recommendation={el.recommendation} />
+        ))}
       </ul>
       <footer></footer>
     </aside>

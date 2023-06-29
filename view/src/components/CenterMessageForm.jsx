@@ -6,6 +6,7 @@ const CenterMessageForm = ({ props }) => {
   if (isNewMatches) {
     name = "New Matches";
   }
+
   return (
     <aside class="center-side">
       <div class="chat-room-head">
@@ -16,13 +17,13 @@ const CenterMessageForm = ({ props }) => {
           name={message.name}
           message={message.message}
           photoUrl={message.photoUrl}
-          isUserMessage={true}
+          isUserMessage={message.isUserMessage}
         ></Message>
       ))}
 
       <footer>
         <div class="chat-txt">
-          <input type="text" class="form-control" />
+          <textarea type="text" class="form-control" />
         </div>
 
         <button class="btn btn-danger" data-original-title="" title="">

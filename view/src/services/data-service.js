@@ -17,7 +17,14 @@ export default class DataService {
   }
   //   async getUserProfile() {} // n sei se vai precisar
   async getRecommendations() {}
+  async getNewMatchesRecommendations() {}
 
-  async getChatMessages() {}
+  async getChatMessages(matchId) {
+    const matches = await axios.get(url + `/messages/${matchId}`, {
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
+    return matches.data;
+  }
+
   async sendMessage() {}
 }

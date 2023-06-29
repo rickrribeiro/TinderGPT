@@ -1,7 +1,12 @@
-const Recommendations = (props) => {
-  const { photoUrl, name, isActive } = props;
+const Recommendation = (props) => {
+  const { recommendation } = props;
 
-  return <li class={isActive ? "active" : ""}></li>;
+  return (
+    <li>
+      <hr />
+      <a href="#chat-room.html">{recommendation}</a>
+    </li>
+  );
 };
 
-export default Recommendations;
+export default Recommendation;

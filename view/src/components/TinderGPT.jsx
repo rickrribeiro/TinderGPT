@@ -3,15 +3,15 @@ import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSideBar";
 
 const TinderGPT = (props) => {
-  const { chats, activeChat, messages, matches, isNewMatches, newMatches } =
-    props.props;
+  const { chats, activeChat, messages, matches, isNewMatches } = props.props;
+
   const leftSideBarProps = {
     matches,
   };
 
   let parsedMessages = [];
   if (isNewMatches) {
-    parsedMessages = newMatches.map((match) => ({
+    parsedMessages = messages.map((match) => ({
       name: match.name,
       message: match.bio,
       photoUrl: match.photoUrl,
@@ -20,12 +20,13 @@ const TinderGPT = (props) => {
     parsedMessages = messages.map((message) => ({
       name: message.name,
       message: message.message,
+      isUserMessage: message.isUserMessage,
     }));
   }
 
   const centerMessageFormProps = {
     parsedMessages: "Name",
-    isNewMatches: true,
+    isNewMatches: isNewMatches,
     messages: parsedMessages,
   };
 

@@ -37,32 +37,73 @@ export class Routes {
         routes.get('/newMatches', authMiddleware, async (req: Request, res: Response) => {
             try {
                 // botar um possivel filtro por distancia ou outros filtros
-                //const { userId } = req.body;
+
                 const { socialMediaService } = dependencies;
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;//req.headers['x-auth-token'] as string;
-                //const newMatches = await socialMediaService.getNewMatches(session)
-                const newMatches = [
-                    {
-                        photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        bio: "BIO1",
-                        name: "Teste11",
-                    },
-                    {
-                        photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        isActive: true,
-                        bio: "BIO2",
-                        name: "Teste22",
-                    },
-                    {
-                        photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        bio: "BIO3",
-                        name: "Teste33",
-                    },
-                ]
+
+                const newMatches = await socialMediaService.getNewMatches(session)
+                // const newMatches = [
+                //     {
+                //         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
+                //         bio: "BIO1",
+                //         name: "Teste11",
+                //         id: "1"
+                //     },
+                //     {
+                //         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
+                //         isActive: true,
+                //         bio: "BIO2",
+                //         name: "Teste22",
+                //         id: "2"
+                //     },
+                //     {
+                //         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
+                //         bio: "BIO3",
+                //         name: "Teste33",
+                //         id: "3"
+                //     },
+                // ]
                 res.send(newMatches);
             } catch (err: any) {
                 res.status(500).send({ message: err.message, name: err.name, code: err.code })
             }
+        });
+
+        routes.get('/messages/:id', authMiddleware, async (req: Request, res: Response) => {
+            const { id } = req.params; // botar pra pegar da api do tinder
+
+            // const tinderClient = new TinderClient();
+            // let messages = []
+            // for (let match of matches) {
+            //     let history = await tinderClient.getMessageHistory(match.id);
+            //     messages.push(history);
+            //     console.log(history);
+            // }
+            const messages = [
+                {
+                    message: "message1",
+                    name: "rrr",
+                    isUserMessage: true
+                },
+                {
+                    isActive: true,
+                    message: "message2",
+                    name: "Teste" + id,
+                },
+                {
+                    message: "message3",
+                    name: "rrr",
+                    isUserMessage: true
+                }, {
+                    message: "message3",
+                    name: "Teste" + id,
+                },
+                {
+                    message: "message3",
+                    name: "Teste" + id,
+                },
+            ]
+            res.send(messages);
         });
 
         routes.get('/getUserById/:userId', authMiddleware, async (req: Request, res: Response) => {
@@ -107,18 +148,7 @@ export class Routes {
         //     res.send(session)
         // });
 
-        // routes.get('/messages/history', authMiddleware, async (req: Request, res: Response) => {
-        //     const matches = [{ id: "123" }]; // botar pra pegar da api do tinder
-        //     const
-        //     const tinderClient = new TinderClient();
-        //     let messages = []
-        //     for (let match of matches) {
-        //         let history = await tinderClient.getMessageHistory(match.id);
-        //         messages.push(history);
-        //         console.log(history);
-        //     }
-        //     res.send(messages);
-        // });
+
 
         // routes.get('/messages/recommendation', authMiddleware, async (req: Request, res: Response) => {
         //     const matches = [{ id: "123" }]; // botar pra pegar da api do tinder
@@ -143,17 +173,18 @@ export class Routes {
                 const matches = [
                     {
                         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        isActive: false,
                         name: "Teste11",
+                        id: "1"
                     },
                     {
                         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        isActive: true,
                         name: "Teste22",
+                        id: "2"
                     },
                     {
                         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
                         name: "Teste33",
+                        id: "3"
                     },
                 ]
                 res.send(matches);

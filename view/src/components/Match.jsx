@@ -1,10 +1,10 @@
 const Match = (props) => {
-  const { photoUrl, name, isActive } = props;
+  const { photoUrl, name, isActive, id } = props;
 
   return (
-    <li class={isActive ? "active" : ""}>
-      <a href="#chat_room.html">
-        <a class="chat-avatar" href="#javascript:;">
+    <li key={id} class={isActive ? "active" : ""}>
+      <a href={`/${id}`}>
+        <a class="chat-avatar">
           <img alt="" src={photoUrl} />
         </a>
         <span>{name}</span>

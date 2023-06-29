@@ -13,7 +13,7 @@ const LeftSideBar = ({ props }) => {
       </div>
       <ul class="chat-list">
         <li class="">
-          <a class="lobby" href="#lobby.html">
+          <a class="lobby" href="/">
             <h1 class="new-matches">New Matches</h1>
           </a>
         </li>
@@ -22,6 +22,8 @@ const LeftSideBar = ({ props }) => {
             photoUrl={el.photoUrl}
             name={el.name}
             isActive={el.isActive}
+            key={el.id}
+            id={el.id}
           ></Match>
         ))}
       </ul>

@@ -19,10 +19,18 @@ export class TinderClient implements ISocialMediaService {
 
   async getNewMatches(session: string): Promise<any> { // Array<ITinderMatchResponse>
     const url = this.baseUrl + '/v2/matches?locale=en&count=100&message=0&is_tinder_u=false'
-    const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
-    const newMatches: Array<ITinderMatchResponse> = res.data.data.matches
-    // const matchesNames = newMatches.map((el) => el.person.name)
-    return newMatches;
+    console.log("aaaaaaaa")
+    try {
+      const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
+      const newMatches: Array<ITinderMatchResponse> = res.data.data.matches
+      // const matchesNames = newMatches.map((el) => el.person.name)
+      return newMatches;
+    } catch (err) {
+      console.log((err as any).message)
+      return []
+    }
+
+
   }
 
   async getUserById(session: string, userId: string): Promise<any> {
