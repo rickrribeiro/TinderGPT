@@ -11,7 +11,4 @@ export class AIProviderWrapper implements IAIProvider {
     return await this.provider.ask(question);
   }
 
-  async listModels() {
-    return await this.provider.listModels();
-  }
 }

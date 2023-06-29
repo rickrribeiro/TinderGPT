@@ -40,4 +40,4 @@ dist/**/*
 # ignore yarn.lock
 yarn.lock
 
-api/src/config.ts
+config.ts

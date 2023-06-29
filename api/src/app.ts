@@ -1,9 +1,9 @@
 import express, { Express, NextFunction, Request, Response } from 'express';
 import { AIProvidersEnum, SocialMediaEnum } from "./services/enums";
 import { DependencyContainer } from './dependency-container';
-
+import cors from 'cors'
 import { Routes } from './routes'
-const port = 3000;
+const port = 3001;
 
 // Without provider selection for now because there is only one, but remember to add later
 const dependencyContainer = DependencyContainer.getInstance({
@@ -14,6 +14,8 @@ const routes = Routes.setUp(dependencyContainer);
 
 const app: Express = express();
 app.use(express.json())
+app.use(cors())
+
 app.use('/', routes);
 
 app.listen(port, () => {

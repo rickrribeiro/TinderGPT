@@ -3,7 +3,8 @@ import config from "../../config/config";
 export class CustomMessagesBuilder {
 
     public defaultFirstMessage(): string {
-        return ""
+        return `Estou na cidade de são paulo, minha bio é {bio}, 
+        qual mensagem devo mandar para puxar mensagem com uma menina no tinder?`
     }
 
     public historyBasedMessage(message: string, history: string) {
