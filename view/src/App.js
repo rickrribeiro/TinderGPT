@@ -13,11 +13,13 @@ const App = () => {
   const [newMatches, setNewMatches] = useState([]);
   const [messages, setMessages] = useState([]);
   const [isNewMatches, setIsNewMatches] = useState(false);
+  const [recommendations, setRecommendations] = useState(false);
+
   useEffect(() => {
     const path = window.location.href.split("3000/");
     dataService.getMatchesWithUnreadMessages().then((response) => {
-      console.log(path[1]);
-      console.log(response);
+      // console.log(path[1]);
+      // console.log(response);
       const matches = response.map((el) => ({
         ...el,
         isActive: el.id == path[1] ? true : false,
@@ -28,10 +30,16 @@ const App = () => {
       dataService.getNewMatches().then((response) => {
         setNewMatches(response);
       });
+      dataService.getNewMatchesRecommendations().then((response) => {
+        setRecommendations(response);
+      });
       setIsNewMatches(true);
     } else {
       dataService.getChatMessages(path[1]).then((response) => {
         setMessages(response);
+      });
+      dataService.getRecommendations(path[1]).then((response) => {
+        setRecommendations(response);
       });
       setIsNewMatches(false);
     }
@@ -44,6 +52,7 @@ const App = () => {
     matches: matches,
     newMatches: newMatches,
     isNewMatches: isNewMatches,
+    recommendations: recommendations,
   };
   // const location = ;
   return (

@@ -4,8 +4,8 @@ import Match from "./Match";
 
 const LeftSideBar = ({ props }) => {
   const { matches } = props;
-  console.log("AAAA");
-  console.log(matches);
+  // console.log("AAAA");
+  // console.log(matches);
   return (
     <aside class="left-side">
       <div class="user-head">

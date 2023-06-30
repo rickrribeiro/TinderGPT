@@ -2,6 +2,7 @@ import { Router, Request, Response } from 'express';
 import config from './config'
 import { DependencyContainer } from './dependency-container';
 import { authMiddleware } from './middlewares/auth-middleware';
+import { CustomMessagesBuilder } from './services/ai_providers/custom-messages'
 export class Routes {
 
     public static setUp(dependencies: DependencyContainer): Router {
@@ -42,27 +43,7 @@ export class Routes {
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;//req.headers['x-auth-token'] as string;
 
                 const newMatches = await socialMediaService.getNewMatches(session)
-                // const newMatches = [
-                //     {
-                //         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                //         bio: "BIO1",
-                //         name: "Teste11",
-                //         id: "1"
-                //     },
-                //     {
-                //         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                //         isActive: true,
-                //         bio: "BIO2",
-                //         name: "Teste22",
-                //         id: "2"
-                //     },
-                //     {
-                //         photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                //         bio: "BIO3",
-                //         name: "Teste33",
-                //         id: "3"
-                //     },
-                // ]
+
                 res.send(newMatches);
             } catch (err: any) {
                 res.status(500).send({ message: err.message, name: err.name, code: err.code })
@@ -134,21 +115,21 @@ export class Routes {
         //     res.send(session)
         // });
 
-        // routes.post('/sendMessages', async (req: Request, res: Response) => {
-        // para varios
-        //     const { redisService } = dependencies;
-        //     /* 
-        //     TODO - REMOVER VALORES MOCKADOS pois meu tinder não ta conectado no face
-        //     adicionando manualmente o session, mas implementar depois
-        //     */
-        //     const userId = config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
-        //     const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+        routes.get('/recommendations/newmatches', async (req: Request, res: Response) => {
+            const customMessagesBuilder = new CustomMessagesBuilder();
+            const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+            const { aiProvider, socialMediaService } = dependencies;
+            const bio = await socialMediaService.getMyBio(session)
+            const resps: any = await aiProvider.ask(customMessagesBuilder.firstMessageRecommendations(bio));
+            res.send(resps.choices[0].message.content)
+        });
 
-        //     await redisService.setKey(session, userId)
-        //     res.send(session)
-        // });
-
-
+        routes.get('/mybio', async (req: Request, res: Response) => {
+            const { socialMediaService } = dependencies;
+            const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+            const bio = await socialMediaService.getMyBio(session)
+            res.send(bio);
+        });
 
         // routes.get('/messages/recommendation', authMiddleware, async (req: Request, res: Response) => {
         //     const matches = [{ id: "123" }]; // botar pra pegar da api do tinder

@@ -3,7 +3,14 @@ import LeftSideBar from "./LeftSideBar";
 import RightSideBar from "./RightSideBar";
 
 const TinderGPT = (props) => {
-  const { chats, activeChat, messages, matches, isNewMatches } = props.props;
+  const {
+    chats,
+    activeChat,
+    messages,
+    matches,
+    isNewMatches,
+    recommendations,
+  } = props.props;
 
   const leftSideBarProps = {
     matches,
@@ -30,8 +37,11 @@ const TinderGPT = (props) => {
     messages: parsedMessages,
   };
 
-  const chat = chats && chats[activeChat];
-
+  const rightSideBarProps = {
+    recommendations: recommendations || [],
+  };
+  console.log("RECCCCCCCCCCCCCCCc: ");
+  console.log(recommendations);
   return (
     <div class="container bootstrap snippets">
       <div class="row">
@@ -40,7 +50,7 @@ const TinderGPT = (props) => {
             <div class="chat-room">
               <LeftSideBar props={leftSideBarProps} />
               <CenterMessageForm props={centerMessageFormProps} />
-              <RightSideBar />
+              <RightSideBar props={rightSideBarProps} />
             </div>
           </div>
         </div>

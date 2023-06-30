@@ -2,9 +2,9 @@ import config from "../../config/config";
 
 export class CustomMessagesBuilder {
 
-    public firstMessageRecommendations(): string {
-        return `Estou na cidade de são paulo, minha bio é {bio}, 
-        qual mensagem devo mandar para puxar conversa com uma menina no tinder?`
+
+    public firstMessageRecommendations(bio: string): string {
+        return `Acabei de chegar na cidade de são paulo e não conheço nada aqui, me dê 5 sugestões de mensagens para mandar para puxar conversa com uma menina no tinder? Responda no formato ["sugestão 1", "sugestão 2", "sugestão 3","sugestão 4","sugestão 5"]. Uma breve descrição sobre mim: ${bio}`
     }
 
     public historyBasedMessage(message: string, history: string) {

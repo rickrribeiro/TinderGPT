@@ -7,6 +7,10 @@ export class SocialMediaServiceWrapper implements ISocialMediaService {
         this.service = service;
     }
 
+    async getMyBio(session: string): Promise<string> {
+        return await this.service.getMyBio(session);
+    }
+
     async getUserById(session: string, userId: string): Promise<any> {
         return await this.service.getUserById(session, userId);
     }

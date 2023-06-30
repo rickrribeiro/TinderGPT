@@ -9,6 +9,14 @@ export class TinderClient implements ISocialMediaService {
     Accept: 'application/json',
   }
 
+  public async getMyBio(session: string): Promise<string> {
+    const url = this.baseUrl + '/v2/profile?locale=en&include=user'
+    const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
+    const user: string = res.data.data.user.bio
+    // console.log(res.data.data.user.bio);
+    return user;
+  }
+
   // TODO - mudar de singleton pra normal mesmo qnd adicionar a auth
   public static async getTinderClient(): Promise<TinderClient> {
     if (!this.tinderClient) {
@@ -18,11 +26,17 @@ export class TinderClient implements ISocialMediaService {
   }
 
   async getNewMatches(session: string): Promise<any> { // Array<ITinderMatchResponse>
-    const url = this.baseUrl + '/v2/matches?locale=en&count=100&message=0&is_tinder_u=false'
-    console.log("aaaaaaaa")
+    const url = this.baseUrl + '/v2/matches?locale=en&count=11&message=0&is_tinder_u=false'
     try {
       const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
-      const newMatches: Array<ITinderMatchResponse> = res.data.data.matches
+      const newMatches: Array<ITinderMatchResponse> = res.data.data.matches.map((el: any) => {
+        return {
+          id: el.person._id,
+          name: el.person.name,
+          photoUrl: el.person.photos[0].url,
+          bio: el.person.bio
+        }
+      });
       // const matchesNames = newMatches.map((el) => el.person.name)
       return newMatches;
     } catch (err) {
@@ -57,4 +71,7 @@ export class TinderClient implements ISocialMediaService {
     const token = await axios.post(this.baseUrl, { facebook_id, facebook_token }, { headers: this.defaultHeaders });
     return token.data
   }
+
+
+
 }
