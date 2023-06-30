@@ -1,21 +1,17 @@
 import axios from 'axios';
 import { ISocialMediaService, ITinderMatchResponse } from "../interfaces";
 import config from '../../config'
+
 export class TinderClient implements ISocialMediaService {
+
   private static tinderClient: TinderClient;
+
   private baseUrl = config.SOCIAL_MEDIA_SERVICES.TINDER.url;
   private defaultHeaders = {
     'Content-Type': 'application/json',
     Accept: 'application/json',
   }
 
-  public async getMyBio(session: string): Promise<string> {
-    const url = this.baseUrl + '/v2/profile?locale=en&include=user'
-    const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
-    const user: string = res.data.data.user.bio
-    // console.log(res.data.data.user.bio);
-    return user;
-  }
 
   // TODO - mudar de singleton pra normal mesmo qnd adicionar a auth
   public static async getTinderClient(): Promise<TinderClient> {
@@ -23,6 +19,46 @@ export class TinderClient implements ISocialMediaService {
       this.tinderClient = new TinderClient()
     }
     return this.tinderClient;
+  }
+
+  async getMatchesWithUnreadMessages(session: string): Promise<any[]> {
+    const url = this.baseUrl + '/v2/matches?locale=en&count=11&message=1&is_tinder_u=false'
+    try {
+
+      const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
+      const newMatches: Array<ITinderMatchResponse> = res.data.data.matches.filter((el: any) => el.messages[0].from != config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID).map((el: any) => {
+        return {
+          id: el.person._id,
+          name: el.person.name,
+          photoUrl: el.person.photos[0].url
+        }
+      });
+      // const matchesNames = newMatches.map((el) => el.person.name)
+      return newMatches;
+    } catch (err) {
+      console.log((err as any).message)
+      return []
+    }
+  }
+
+
+  async getMessageHistory(session: string, id: string): Promise<any> {//
+    const url = this.baseUrl + `/v2/matches/${id}/messages?locale=en&count=100`
+    // const url = this.baseUrl + `/v2/matches/5d1038b6261c7c1500155c2063f94fcf7c2cdf0100e0bf84/messages?locale=en&count=100`
+    try {
+      const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
+      const messages: Array<ITinderMatchResponse> = res.data.data.messages.map((el: any) => {
+        const isUserMessage = el.from != id.replace(config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID, '') ? true : false;// '63f94fcf7c2cdf0100e0bf84'
+        return {
+          message: el.message,
+          isUserMessage: isUserMessage
+        }
+      });
+      return messages.reverse();
+    } catch (err) {
+      console.log((err as any).message)
+      return []
+    }
   }
 
   async getNewMatches(session: string): Promise<any> { // Array<ITinderMatchResponse>
@@ -47,6 +83,16 @@ export class TinderClient implements ISocialMediaService {
 
   }
 
+
+  public async getMyBio(session: string): Promise<string> {
+    const url = this.baseUrl + '/v2/profile?locale=en&include=user'
+    const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
+    const user: string = res.data.data.user.bio
+    // console.log(res.data.data.user.bio);
+    return user;
+  }
+
+
   async getUserById(session: string, userId: string): Promise<any> {
     const url = this.baseUrl + `/user/${userId}?locale=en`
     const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
@@ -54,14 +100,17 @@ export class TinderClient implements ISocialMediaService {
     return user;
   }
 
-  async sendMessage(session: string, matchId: string): Promise<string> {
-    return "Token";
+  async sendMessage(session: string, userId: string, message: string): Promise<void> {
+    //  const matchId = '62939d6598c12601004e17d363f94fcf7c2cdf0100e0bf84';
+    const matchId = userId + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID; // userId 
+    const url = this.baseUrl + `/user/matches/${matchId}?locale=en`
+    const payload = {
+      "message": message
+    }
+    await axios.post(url, payload, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
   }
 
-  async getMessageHistory(session: string, matchId: string): Promise<any> {
-    //
-    return "Token";
-  }
+
 
   async auth(facebook_token: string, facebook_id: string): Promise<string> {
     /* 

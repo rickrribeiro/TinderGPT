@@ -24,6 +24,7 @@ coverage
 
 # Dependency directory
 node_modules
+node_modules_linux
 bower_components
 
 # Editors

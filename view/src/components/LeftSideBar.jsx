@@ -14,7 +14,7 @@ const LeftSideBar = ({ props }) => {
       <ul class="chat-list">
         <li class="">
           <a class="lobby" href="/">
-            <h1 class="new-matches">New Matches</h1>
+            <h1 class="new-matches">Batch Message for New Matches</h1>
           </a>
         </li>
         {matches.map((el) => (
@@ -24,6 +24,7 @@ const LeftSideBar = ({ props }) => {
             isActive={el.isActive}
             key={el.id}
             id={el.id}
+            isNewMatch= {el.isNewMatch}
           ></Match>
         ))}
       </ul>

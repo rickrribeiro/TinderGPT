@@ -51,40 +51,16 @@ export class Routes {
         });
 
         routes.get('/messages/:id', authMiddleware, async (req: Request, res: Response) => {
-            const { id } = req.params; // botar pra pegar da api do tinder
+            const { id } = req.params;
 
-            // const tinderClient = new TinderClient();
+            const { socialMediaService } = dependencies;
+            const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
             // let messages = []
-            // for (let match of matches) {
-            //     let history = await tinderClient.getMessageHistory(match.id);
-            //     messages.push(history);
-            //     console.log(history);
-            // }
-            const messages = [
-                {
-                    message: "message1",
-                    name: "rrr",
-                    isUserMessage: true
-                },
-                {
-                    isActive: true,
-                    message: "message2",
-                    name: "Teste" + id,
-                },
-                {
-                    message: "message3",
-                    name: "rrr",
-                    isUserMessage: true
-                }, {
-                    message: "message3",
-                    name: "Teste" + id,
-                },
-                {
-                    message: "message3",
-                    name: "Teste" + id,
-                },
-            ]
-            res.send(messages);
+
+            const matchId = id + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
+            let history = await socialMediaService.getMessageHistory(session, matchId);
+            // console.log(history);
+            res.send(history);
         });
 
         routes.get('/getUserById/:userId', authMiddleware, async (req: Request, res: Response) => {
@@ -101,19 +77,23 @@ export class Routes {
             }
         });
 
-        // routes.post('/sendMessage', async (req: Request, res: Response) => {
-        // PARA APENAS UMA EPSSOA
-        //     const { redisService } = dependencies;
-        //     /* 
-        //     TODO - REMOVER VALORES MOCKADOS pois meu tinder não ta conectado no face
-        //     adicionando manualmente o session, mas implementar depois
-        //     */
-        //     const userId = config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
-        //     const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+        routes.post('/sendMessages', async (req: Request, res: Response) => {
+            try {
 
-        //     await redisService.setKey(session, userId)
-        //     res.send(session)
-        // });
+                const { users, message }: { users: Array<string>, message: string } = req.body;
+                const { socialMediaService } = dependencies;
+                const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+                users.map(async (user: any) => {
+                    console.log(`${user} - ${message}`)
+                    await socialMediaService.sendMessage(session, user, message)
+                })
+
+                res.send(true)
+            } catch (err) {
+                console.log(err);
+                res.send(false)
+            }
+        });
 
         routes.get('/recommendations/newmatches', async (req: Request, res: Response) => {
             const customMessagesBuilder = new CustomMessagesBuilder();
@@ -131,43 +111,31 @@ export class Routes {
             res.send(bio);
         });
 
-        // routes.get('/messages/recommendation', authMiddleware, async (req: Request, res: Response) => {
-        //     const matches = [{ id: "123" }]; // botar pra pegar da api do tinder
-        //     const
-        //     const tinderClient = new TinderClient();
-        //     let messages = []
-        //     for (let match of matches) {
-        //         let history = await tinderClient.getMessageHistory(match.id);
-        //         messages.push(history);
-        //         console.log(history);
-        //     }
-        //     res.send(messages);
-        // });
+        routes.get('/recommendations/match/:id', authMiddleware, async (req: Request, res: Response) => {
+            try {
+                const { id } = req.params;
+                const customMessagesBuilder = new CustomMessagesBuilder();
+                const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+                const { aiProvider, socialMediaService } = dependencies;
+
+                const bio = await socialMediaService.getMyBio(session)
+
+                const resps: any = await aiProvider.ask(customMessagesBuilder.firstMessageRecommendations(bio));
+                res.send(resps.choices[0].message.content)
+            } catch (err) {
+                console.log(err);
+                res.send([])
+            }
+        });
 
         routes.get('/matchesWithUnreadMessages', authMiddleware, async (req: Request, res: Response) => {
             try {
-                // // botar um possivel filtro por distancia ou outros filtros
-                // //const { userId } = req.body;
-                // const { socialMediaService } = dependencies;
-                // const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION; //req.headers['x-auth-token'] as string;
-                // const newMatches = await socialMediaService.getNewMatches(session)
-                const matches = [
-                    {
-                        photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        name: "Teste11",
-                        id: "1"
-                    },
-                    {
-                        photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        name: "Teste22",
-                        id: "2"
-                    },
-                    {
-                        photoUrl: "https://bootdey.com/img/Content/avatar/avatar1.png",
-                        name: "Teste33",
-                        id: "3"
-                    },
-                ]
+
+                const { socialMediaService } = dependencies;
+                const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION; //req.headers['x-auth-token'] as string;
+                const matchesWithUnreadMessages = ((await socialMediaService.getMatchesWithUnreadMessages(session)).map((el => ({ ...el, isNewMatch: false }))))
+                const newMatches = ((await socialMediaService.getNewMatches(session)).map((el => ({ ...el, isNewMatch: true }))))
+                const matches = matchesWithUnreadMessages.concat(newMatches);
                 res.send(matches);
             } catch (err: any) {
                 res.status(500).send({ message: err.message, name: err.name, code: err.code })

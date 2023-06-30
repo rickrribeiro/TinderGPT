@@ -17,14 +17,18 @@ export default class DataService {
   }
   //   async getUserProfile() {} // n sei se vai precisar
   async getRecommendations(userId) {
-    // const recommendations = await axios.get(
-    //   url + "/recommendations/:id",
-    //   {
-    //     headers: { "Access-Control-Allow-Origin": "*" },
-    //   }
-    // );
-    // return recommendations.data;
-    return [];
+    const recommendations = await axios.get(
+      url + "/recommendations/match/"+userId,
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
+    const recs = recommendations.data
+      .split("\n")
+      .map((el) => el.replace('["', "").replace('"]', ""))
+      .filter((e) => e !== "");
+
+    return recs;
   }
 
   async getNewMatchesRecommendations() {
@@ -49,5 +53,14 @@ export default class DataService {
     return matches.data;
   }
 
-  async sendMessage() {}
+  async sendMessage(users, message) {
+    const payload = {
+      users,
+      message
+    }
+    await axios.post(url + `/sendMessages`, payload, {
+      headers: { "Access-Control-Allow-Origin": "*" },
+    });
+ 
+  }
 }

@@ -4,12 +4,12 @@ import RightSideBar from "./RightSideBar";
 
 const TinderGPT = (props) => {
   const {
-    chats,
-    activeChat,
     messages,
     matches,
     isNewMatches,
     recommendations,
+    activeMatchName,
+    userId
   } = props.props;
 
   const leftSideBarProps = {
@@ -17,11 +17,13 @@ const TinderGPT = (props) => {
   };
 
   let parsedMessages = [];
+
   if (isNewMatches) {
     parsedMessages = messages.map((match) => ({
       name: match.name,
       message: match.bio,
       photoUrl: match.photoUrl,
+      id: match.id
     }));
   } else {
     parsedMessages = messages.map((message) => ({
@@ -35,13 +37,15 @@ const TinderGPT = (props) => {
     parsedMessages: "Name",
     isNewMatches: isNewMatches,
     messages: parsedMessages,
+    activeMatchName: activeMatchName,
+    userId: userId
   };
 
   const rightSideBarProps = {
     recommendations: recommendations || [],
   };
-  console.log("RECCCCCCCCCCCCCCCc: ");
-  console.log(recommendations);
+  // console.log("RECCCCCCCCCCCCCCCc: ");
+  // console.log(recommendations);
   return (
     <div class="container bootstrap snippets">
       <div class="row">

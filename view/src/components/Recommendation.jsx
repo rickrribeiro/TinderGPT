@@ -4,7 +4,7 @@ const Recommendation = (props) => {
   return (
     <li>
       <hr />
-      <a href="#chat-room.html">{recommendation}</a>
+      <a onClick={() =>{document.getElementById('message-area').value=recommendation}}>{recommendation}</a>
     </li>
   );
 };

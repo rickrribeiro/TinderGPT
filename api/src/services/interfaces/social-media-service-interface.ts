@@ -1,6 +1,8 @@
 export interface ISocialMediaService {
-  sendMessage(session: string, message: string): Promise<string>;
+  sendMessage(session: string, userId: string, message: string): Promise<void>;
   getNewMatches(session: string): Promise<Array<any>>;
   getUserById(session: string, userId: string): Promise<any>;
   getMyBio(session: string): Promise<string>;
+  getMessageHistory(session: string, id: string): Promise<Array<any>>
+  getMatchesWithUnreadMessages(session: string): Promise<Array<any>>
 }

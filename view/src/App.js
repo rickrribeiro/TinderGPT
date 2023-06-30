@@ -13,17 +13,23 @@ const App = () => {
   const [newMatches, setNewMatches] = useState([]);
   const [messages, setMessages] = useState([]);
   const [isNewMatches, setIsNewMatches] = useState(false);
-  const [recommendations, setRecommendations] = useState(false);
-
+  const [recommendations, setRecommendations] = useState([]);
+  const [activeMatchName, setActiveMatchName] = useState('');
+  const [userId, setUserId] = useState('');
   useEffect(() => {
     const path = window.location.href.split("3000/");
+    let activeMatchName = ""
     dataService.getMatchesWithUnreadMessages().then((response) => {
-      // console.log(path[1]);
-      // console.log(response);
-      const matches = response.map((el) => ({
+      const matches = response.map((el) => {
+      const isActive = el.id == path[1] ? true : false;
+      if(isActive){
+      setActiveMatchName(el.name);
+      }
+      return {
         ...el,
-        isActive: el.id == path[1] ? true : false,
-      }));
+        isActive: isActive,
+      }});
+      
       setMatches(matches);
     });
     if (path[1] === "") {
@@ -37,22 +43,27 @@ const App = () => {
     } else {
       dataService.getChatMessages(path[1]).then((response) => {
         setMessages(response);
-      });
+      }); 
+
       dataService.getRecommendations(path[1]).then((response) => {
         setRecommendations(response);
       });
+
+
+      setUserId(path[1]);
+  
       setIsNewMatches(false);
     }
   }, []);
 
   const props = {
-    chats: [],
-    activeChat: 0,
     messages: isNewMatches ? newMatches : messages,
     matches: matches,
     newMatches: newMatches,
     isNewMatches: isNewMatches,
     recommendations: recommendations,
+    activeMatchName: activeMatchName,
+    userId: userId
   };
   // const location = ;
   return (
