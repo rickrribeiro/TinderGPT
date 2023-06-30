@@ -119,11 +119,12 @@ export class Routes {
                 const { aiProvider, socialMediaService } = dependencies;
 
                 const bio = await socialMediaService.getMyBio(session)
-
-                const resps: any = await aiProvider.ask(customMessagesBuilder.firstMessageRecommendations(bio));
+                const matchProfile = await socialMediaService.getUserById(session, id)
+                const resps: any = await aiProvider.ask(customMessagesBuilder.bioBasedMessage(bio, matchProfile.bio));
                 res.send(resps.choices[0].message.content)
             } catch (err) {
                 console.log(err);
+                console.log("ERRO NA RECOMENDAÇÃO GPT")
                 res.send([])
             }
         });

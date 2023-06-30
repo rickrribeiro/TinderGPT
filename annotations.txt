@@ -1,2 +1,0 @@
-- lista de todas perto c bio e opção de mandar a msg padrão p todas
-- lista chats pra resposta c as sugestões ( ver os varios tipos )
