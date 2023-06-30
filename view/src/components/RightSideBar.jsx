@@ -1,5 +1,3 @@
-import { useState } from "react";
-import { SendOutlined, PictureOutlined } from "@ant-design/icons";
 import Recommendation from "./Recommendation";
 
 const RightSideBar = ({ props }) => {

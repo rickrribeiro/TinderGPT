@@ -1,6 +1,5 @@
 // import { ChatEngine } from "react-chat-engine";
 import { useState, useEffect } from "react";
-import { useLocation } from "react-router-dom";
 import "./App.css";
 import TinderGPT from "./components/TinderGPT";
 import DataService from "./services/data-service";
@@ -14,22 +13,23 @@ const App = () => {
   const [messages, setMessages] = useState([]);
   const [isNewMatches, setIsNewMatches] = useState(false);
   const [recommendations, setRecommendations] = useState([]);
-  const [activeMatchName, setActiveMatchName] = useState('');
-  const [userId, setUserId] = useState('');
+  const [activeMatchName, setActiveMatchName] = useState("");
+  const [userId, setUserId] = useState("");
   useEffect(() => {
     const path = window.location.href.split("3000/");
-    let activeMatchName = ""
+    let activeMatchName = "";
     dataService.getMatchesWithUnreadMessages().then((response) => {
       const matches = response.map((el) => {
-      const isActive = el.id == path[1] ? true : false;
-      if(isActive){
-      setActiveMatchName(el.name);
-      }
-      return {
-        ...el,
-        isActive: isActive,
-      }});
-      
+        const isActive = el.id == path[1] ? true : false;
+        if (isActive) {
+          setActiveMatchName(el.name);
+        }
+        return {
+          ...el,
+          isActive: isActive,
+        };
+      });
+
       setMatches(matches);
     });
     if (path[1] === "") {
@@ -43,15 +43,14 @@ const App = () => {
     } else {
       dataService.getChatMessages(path[1]).then((response) => {
         setMessages(response);
-      }); 
+      });
 
       dataService.getRecommendations(path[1]).then((response) => {
         setRecommendations(response);
       });
 
-
       setUserId(path[1]);
-  
+
       setIsNewMatches(false);
     }
   }, []);
@@ -63,7 +62,7 @@ const App = () => {
     isNewMatches: isNewMatches,
     recommendations: recommendations,
     activeMatchName: activeMatchName,
-    userId: userId
+    userId: userId,
   };
   // const location = ;
   return (

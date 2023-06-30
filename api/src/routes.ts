@@ -37,7 +37,7 @@ export class Routes {
 
         routes.get('/newMatches', authMiddleware, async (req: Request, res: Response) => {
             try {
-                // botar um possivel filtro por distancia ou outros filtros
+                // Aplicar os filstros de distancia
 
                 const { socialMediaService } = dependencies;
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;//req.headers['x-auth-token'] as string;

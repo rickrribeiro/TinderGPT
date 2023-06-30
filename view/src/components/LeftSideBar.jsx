@@ -24,7 +24,7 @@ const LeftSideBar = ({ props }) => {
             isActive={el.isActive}
             key={el.id}
             id={el.id}
-            isNewMatch= {el.isNewMatch}
+            isNewMatch={el.isNewMatch}
           ></Match>
         ))}
       </ul>

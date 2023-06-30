@@ -17,8 +17,60 @@ export class CustomMessagesBuilder {
         Bio Dela: "${matchBio}"
         `;
     }
+    // history only
+    public simpleHistoryBasedMessage(message: string, history: string) {
+        /*
+         * Outras Possibilidades: mandar o historico de msgs, mandar lista de tópicos
+         */
+        return `
+        Quero que você gere sugestões de respostas para as seguintes mensagens ${config.BASE_MESSAGE} do   Tinder tomando como base minha descrição e o histórico da conversa.   
+        Descrição: "${config.BASE_MESSAGE}".
+        Histórico: "${history}". 
+        Dê continuidade a conversa como se fosse eu:
+        "${message}"
+        `;
+    }
 
-    public historyBasedMessage(message: string, history: string) {
+    public topicBaseMessage(myTopics: string, matchTopics: string) {
+        /*
+         * Outras Possibilidades: mandar o historico de msgs, mandar lista de tópicos
+         */
+        return `
+        Quero que você gere sugestões de respostas para as seguintes mensagens ${config.BASE_MESSAGE} do   Tinder tomando como base minha descrição e o histórico da conversa.   
+        Descrição: "${config.BASE_MESSAGE}".
+        Histórico: "${""}". 
+        Dê continuidade a conversa como se fosse eu:
+        "${""}"
+        `;
+    }
+
+    public bioAndTopicsBaseMessage(message: string, history: string) {
+        /*
+         * Outras Possibilidades: mandar o historico de msgs, mandar lista de tópicos
+         */
+        return `
+        Quero que você gere sugestões de respostas para as seguintes mensagens ${config.BASE_MESSAGE} do   Tinder tomando como base minha descrição e o histórico da conversa.   
+        Descrição: "${config.BASE_MESSAGE}".
+        Histórico: "${history}". 
+        Dê continuidade a conversa como se fosse eu:
+        "${message}"
+        `;
+    }
+
+    public historyWithTopicsBasedMessage(message: string, history: string) {
+        /*
+         * Outras Possibilidades: mandar o historico de msgs, mandar lista de tópicos
+         */
+        return `
+        Quero que você gere sugestões de respostas para as seguintes mensagens ${config.BASE_MESSAGE} do   Tinder tomando como base minha descrição e o histórico da conversa.   
+        Descrição: "${config.BASE_MESSAGE}".
+        Histórico: "${history}". 
+        Dê continuidade a conversa como se fosse eu:
+        "${message}"
+        `;
+    }
+
+    public historyWithBioAndTopicsBaseMessage(message: string, history: string) {
         /*
          * Outras Possibilidades: mandar o historico de msgs, mandar lista de tópicos
          */
