@@ -13,8 +13,8 @@ export class CustomMessagesBuilder {
          */
         return `
         Quero que você gere sugestões de mensagem para que eu possa enviar para essa menina que dei match no tinder baseada em nossas descrições.   
-        Minha Bio: "${bio}"
-        Bio Dela: "${matchBio}"
+        Minha descrição: "${bio}" |
+        Descrição dela: "${matchBio}"
         `;
     }
     // history only
@@ -82,4 +82,17 @@ export class CustomMessagesBuilder {
         "${message}"
         `;
     }
+    public replyMessageBioBased(message: string, myBio: string, matchBio: string) {
+        /*
+         * Outras Possibilidades: mandar o historico de msgs, mandar lista de tópicos
+         */
+        return `
+        Quero que você gere sugestões de respostas para as seguintes mensagens  do   Tinder tomando como base minha descrição.   
+        Minha Descrição: "${myBio}".
+        Descrição dela: "${matchBio}". 
+        responda essas mensagens como se fosse eu:
+        "${message}"
+        `;
+    }
+
 }

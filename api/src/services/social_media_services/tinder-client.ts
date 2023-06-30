@@ -85,9 +85,10 @@ export class TinderClient implements ISocialMediaService {
   public async getMyBio(session: string): Promise<string> {
     const url = this.baseUrl + '/v2/profile?locale=en&include=user'
     const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
-    const user: string = res.data.data.user.bio
+    const bio: string = res.data.data.user.bio
     // console.log(res.data.data.user.bio);
-    return user;
+    // return bio;
+    return "Amo viajar, tomar cerveja, jogos online, ler e sair para conhecer lugares novos!"
   }
 
 
