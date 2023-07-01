@@ -121,17 +121,17 @@ export class Routes {
                 const bio = await socialMediaService.getMyBio(session)
                 const matchProfile = await socialMediaService.getUserById(session, id)
                 // INICIO DA ALTERAÇÃO RAPIDA antes da apresentação
-                let resps: any;
-                const lastMessages: Array<any> = await socialMediaService.getMessageHistory(session, id + config.SOCIAL_MEDIA_SERVICES
-                    .TINDER.USER_ID);
-                if (lastMessages?.length > 0) {
-                    const messages = lastMessages.reverse()[0]; // SE DER TEMPO PEGAR AS ULTIMAS DELA
-                    resps = await aiProvider.ask(customMessagesBuilder.replyMessageBioBased(messages, bio, matchProfile.bio));
-                } else {
-                    resps = await aiProvider.ask(customMessagesBuilder.bioBasedMessage(bio, matchProfile.bio));
-                }
+                // let resps: any;
+                // const lastMessages: Array<any> = await socialMediaService.getMessageHistory(session, id + config.SOCIAL_MEDIA_SERVICES
+                //     .TINDER.USER_ID);
+                // if (lastMessages?.length > 0) {
+                //     const messages = lastMessages.reverse()[0]; // SE DER TEMPO PEGAR AS ULTIMAS DELA
+                //     resps = await aiProvider.ask(customMessagesBuilder.replyMessageBioBased(messages, bio, matchProfile.bio));
+                // } else {
+                //     resps = await aiProvider.ask(customMessagesBuilder.bioBasedMessage(bio, matchProfile.bio));
+                // }
                 //FIM DA ALTERAÇÃO
-                //const resps: any = await aiProvider.ask(customMessagesBuilder.bioBasedMessage(bio, matchProfile.bio));
+                const resps: any = await aiProvider.ask(customMessagesBuilder.bioBasedMessage(bio, matchProfile.bio));
                 res.send(resps.choices[0].message.content)
             } catch (err) {
                 console.log(err);
