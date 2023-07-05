@@ -91,9 +91,14 @@ export class Routes {
                 const { users, message }: { users: Array<string>, message: string } = req.body;
                 const { socialMediaService } = dependencies;
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
-                await Promise.all(await users.map(async (user: any) => {
+                // await Promise.all(await users.map(async (user: any) => {
+                for (const user of users) {
                     console.log(`${user} - ${message}`)
                     const matchId = user + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
+                    await new Promise((r) => {
+                        setTimeout(r, 1000)
+                    })
+                    console.log("asd")
                     try {
                         await socialMediaService.sendMessage(session, matchId, message)
                     } catch (err) {
@@ -101,7 +106,9 @@ export class Routes {
                         await socialMediaService.sendMessage(session, matchId, message)
                     }
 
-                }))
+                }
+                // )
+                // )
 
                 res.send(true)
             } catch (err) {
