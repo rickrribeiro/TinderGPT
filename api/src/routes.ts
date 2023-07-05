@@ -51,16 +51,24 @@ export class Routes {
         });
 
         routes.get('/messages/:id', authMiddleware, async (req: Request, res: Response) => {
-            const { id } = req.params;
+            try {
 
-            const { socialMediaService } = dependencies;
-            const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
-            // let messages = []
-
-            const matchId = id + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
-            let history = await socialMediaService.getMessageHistory(session, matchId);
-            // console.log(history);
-            res.send(history);
+                const { id } = req.params;
+                const { socialMediaService } = dependencies;
+                const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+                // let messages = []
+                const matchId = id + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
+                let history = await socialMediaService.getMessageHistory(session, matchId);
+                // console.log(history);
+                if (!history || history.length == 0) {
+                    const matchId = config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID + id;
+                    history = await socialMediaService.getMessageHistory(session, matchId);
+                }
+                res.send(history);
+            } catch (err) {
+                console.log(err)
+                res.send([])
+            }
         });
 
         routes.get('/getUserById/:userId', authMiddleware, async (req: Request, res: Response) => {
@@ -83,14 +91,22 @@ export class Routes {
                 const { users, message }: { users: Array<string>, message: string } = req.body;
                 const { socialMediaService } = dependencies;
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
-                users.map(async (user: any) => {
+                await Promise.all(await users.map(async (user: any) => {
                     console.log(`${user} - ${message}`)
-                    await socialMediaService.sendMessage(session, user, message)
-                })
+                    const matchId = user + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
+                    try {
+                        await socialMediaService.sendMessage(session, matchId, message)
+                    } catch (err) {
+                        const matchId = config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID + user;
+                        await socialMediaService.sendMessage(session, matchId, message)
+                    }
+
+                }))
 
                 res.send(true)
             } catch (err) {
-                console.log(err);
+                console.log((err as any).message);
+                console.log("Error send message")
                 res.send(false)
             }
         });

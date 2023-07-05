@@ -20,7 +20,7 @@ export class TinderClient implements ISocialMediaService {
   }
 
   async getMatchesWithUnreadMessages(session: string): Promise<any[]> {
-    const url = this.baseUrl + '/v2/matches?locale=en&count=11&message=1&is_tinder_u=false'
+    const url = this.baseUrl + '/v2/matches?locale=en&count=100&message=1&is_tinder_u=false'
     try {
 
       const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
@@ -99,9 +99,9 @@ export class TinderClient implements ISocialMediaService {
     return user;
   }
 
-  async sendMessage(session: string, userId: string, message: string): Promise<void> {
+  async sendMessage(session: string, matchId: string, message: string): Promise<void> {
     //  const matchId = '62939d6598c12601004e17d363f94fcf7c2cdf0100e0bf84';
-    const matchId = userId + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID; // userId 
+
     const url = this.baseUrl + `/user/matches/${matchId}?locale=en`
     const payload = {
       "message": message
