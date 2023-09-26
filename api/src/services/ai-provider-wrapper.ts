@@ -11,4 +11,8 @@ export class AIProviderWrapper implements IAIProvider {
     return await this.provider.ask(question);
   }
 
+  async draw(): Promise<any> {
+    return await this.provider.draw();
+  }
+
 }

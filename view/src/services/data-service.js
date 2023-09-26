@@ -3,10 +3,13 @@ import axios from "axios";
 const url = "http://127.0.0.1:3001";
 
 export default class DataService {
-  async getNewMatches() {
-    const matches = await axios.get(url + "/newMatches", {
-      headers: { "Access-Control-Allow-Origin": "*" },
-    });
+  async getNewMatches(minDistance = 0, maxDistance = 40000) {
+    const matches = await axios.get(
+      url + `/newMatches?minDistance=${minDistance}&maxDistance=${maxDistance}`,
+      {
+        headers: { "Access-Control-Allow-Origin": "*" },
+      }
+    );
     return matches.data;
   }
   async getMatchesWithUnreadMessages() {
@@ -17,33 +20,43 @@ export default class DataService {
   }
   //   async getUserProfile() {} // n sei se vai precisar
   async getRecommendations(userId) {
-    const recommendations = await axios.get(
-      url + "/recommendations/match/" + userId,
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-      }
-    );
-    const recs = recommendations.data
-      .split("\n")
-      .map((el) => el.replace('["', "").replace('"]', ""))
-      .filter((e) => e !== "");
+    try {
+      const recommendations = await axios.get(
+        url + "/recommendations/match/" + userId,
+        {
+          headers: { "Access-Control-Allow-Origin": "*" },
+        }
+      );
+      const recs = recommendations.data
+        .split("\n")
+        .map((el) => el.replace('["', "").replace('"]', ""))
+        .filter((e) => e !== "");
 
-    return recs;
+      return recs;
+    } catch (err) {
+      console.log("error to get recommendations");
+      console.log(err);
+    }
   }
 
   async getNewMatchesRecommendations() {
-    const recommendations = await axios.get(
-      url + "/recommendations/newmatches",
-      {
-        headers: { "Access-Control-Allow-Origin": "*" },
-      }
-    );
-    const recs = recommendations.data
-      .split("\n")
-      .map((el) => el.replace('["', "").replace('"]', ""))
-      .filter((e) => e !== "");
+    try {
+      const recommendations = await axios.get(
+        url + "/recommendations/newmatches",
+        {
+          headers: { "Access-Control-Allow-Origin": "*" },
+        }
+      );
+      const recs = recommendations.data
+        .split("\n")
+        .map((el) => el.replace('["', "").replace('"]', ""))
+        .filter((e) => e !== "");
 
-    return recs;
+      return recs;
+    } catch (err) {
+      console.log("err to get new matches recommendations");
+      console.log(err);
+    }
   }
 
   async getChatMessages(matchId) {

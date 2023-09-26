@@ -13,8 +13,8 @@ export class Routes {
             try {
                 const { userId, question } = req.body;
                 const { aiProvider, socialMediaService, redisService } = dependencies;
-                const resp = await aiProvider.ask(question);
-                res.send(resp);
+                const resp = await aiProvider.draw();
+                res.send(resp.data);
             } catch (err) {
                 res.send(err)
             }
@@ -37,12 +37,12 @@ export class Routes {
 
         routes.get('/newMatches', authMiddleware, async (req: Request, res: Response) => {
             try {
-                // Aplicar os filstros de distancia
+                const { minDistance = '0', maxDistance = '99999' } = req.query
 
                 const { socialMediaService } = dependencies;
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;//req.headers['x-auth-token'] as string;
 
-                const newMatches = await socialMediaService.getNewMatches(session)
+                const newMatches = await socialMediaService.getNewMatches(session, parseInt((minDistance as string)), parseInt((maxDistance as string)))
 
                 res.send(newMatches);
             } catch (err: any) {
@@ -91,14 +91,12 @@ export class Routes {
                 const { users, message }: { users: Array<string>, message: string } = req.body;
                 const { socialMediaService } = dependencies;
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
-                // await Promise.all(await users.map(async (user: any) => {
                 for (const user of users) {
                     console.log(`${user} - ${message}`)
                     const matchId = user + config.SOCIAL_MEDIA_SERVICES.TINDER.USER_ID;
                     await new Promise((r) => {
                         setTimeout(r, 1000)
                     })
-                    console.log("asd")
                     try {
                         await socialMediaService.sendMessage(session, matchId, message)
                     } catch (err) {
@@ -107,9 +105,6 @@ export class Routes {
                     }
 
                 }
-                // )
-                // )
-
                 res.send(true)
             } catch (err) {
                 console.log((err as any).message);
@@ -177,7 +172,23 @@ export class Routes {
             }
         });
 
+        routes.get('/matchesWithUnreadMessages', authMiddleware, async (req: Request, res: Response) => {
+            try {
+
+                const { socialMediaService } = dependencies;
+                const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION; //req.headers['x-auth-token'] as string;
+                const matchesWithUnreadMessages = ((await socialMediaService.getMatchesWithUnreadMessages(session)).map((el => ({ ...el, isNewMatch: false }))))
+                const newMatches = ((await socialMediaService.getNewMatches(session)).map((el => ({ ...el, isNewMatch: true }))))
+                const matches = matchesWithUnreadMessages.concat(newMatches);
+                res.send(matches);
+            } catch (err: any) {
+                res.status(500).send({ message: err.message, name: err.name, code: err.code })
+            }
+        });
+
         return routes;
+
+
     }
 
 

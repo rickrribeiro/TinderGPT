@@ -33,7 +33,10 @@ const App = () => {
       setMatches(matches);
     });
     if (path[1] === "") {
-      dataService.getNewMatches().then((response) => {
+      let minDistance = document.getElementById("minDistance").value || 0;
+      let maxDistance = document.getElementById("maxDistance").value || 999999;
+      console.log(`minDistance: ${minDistance} | maxDistance: ${maxDistance}`);
+      dataService.getNewMatches(minDistance, maxDistance).then((response) => {
         setNewMatches(response);
       });
       dataService.getNewMatchesRecommendations().then((response) => {

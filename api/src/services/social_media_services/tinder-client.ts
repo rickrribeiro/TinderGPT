@@ -59,18 +59,27 @@ export class TinderClient implements ISocialMediaService {
     }
   }
 
-  async getNewMatches(session: string): Promise<any> { // Array<ITinderMatchResponse>
-    const url = this.baseUrl + '/v2/matches?locale=en&count=20&message=0&is_tinder_u=false'
+  async getNewMatches(session: string, minDistance = 0, maxDistance = 99999): Promise<any> { // Array<ITinderMatchResponse>
+    const url = this.baseUrl + '/v2/matches?locale=en&count=40&message=0&is_tinder_u=false'
     try {
       const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
-      const newMatches: Array<ITinderMatchResponse> = res.data.data.matches.map((el: any) => {
-        return {
-          id: el.person._id,
-          name: el.person.name,
-          photoUrl: el.person.photos[0].url,
-          bio: el.person.bio
+      const newMatches: Array<any> = [];
+      for (const match of res.data.data.matches) {
+        await new Promise((resolve) => {
+          setTimeout(resolve, 100);
+        });
+        const user = await this.getUserById(session, match.person._id);
+        const distanceKm = user.distance_mi * 1.60934;
+        if (distanceKm > minDistance && distanceKm < maxDistance) {
+          newMatches.push({
+            id: match.person._id,
+            name: match.person.name,
+            photoUrl: match.person.photos[0].url,
+            bio: match.person.bio,
+            distance: distanceKm
+          })
         }
-      });
+      };
       // const matchesNames = newMatches.map((el) => el.person.name)
       return newMatches;
     } catch (err) {

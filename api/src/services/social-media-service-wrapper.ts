@@ -26,8 +26,8 @@ export class SocialMediaServiceWrapper implements ISocialMediaService {
         return await this.service.sendMessage(session, userId, message);
     }
 
-    async getNewMatches(session: string): Promise<Array<any>> {
-        return await this.service.getNewMatches(session);
+    async getNewMatches(session: string, minDistance = 0, maxDistance = 99999): Promise<Array<any>> {
+        return await this.service.getNewMatches(session, minDistance, maxDistance);
     }
 
 }

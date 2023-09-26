@@ -10,6 +10,27 @@ const LeftSideBar = ({ props }) => {
     <aside class="left-side">
       <div class="user-head">
         <h1>🔥 TinderGPT 🤖</h1>
+        Min distance:{" "}
+        <input
+          id="minDistance"
+          type="number"
+          defaultValue={sessionStorage.getItem("minDistance") || 0}
+          onChange={() => {
+            const value = document.getElementById("minDistance").value || 0;
+            sessionStorage.setItem("minDistance", value);
+          }}
+        />
+        <br></br>
+        Max distance:{" "}
+        <input
+          id="maxDistance"
+          type="number"
+          defaultValue={sessionStorage.getItem("maxDistance") || 99999}
+          onChange={() => {
+            const value = document.getElementById("maxDistance").value || 99999;
+            sessionStorage.setItem("maxDistance", value);
+          }}
+        />
       </div>
       <ul class="chat-list">
         <li class="">

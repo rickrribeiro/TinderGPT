@@ -5,7 +5,7 @@ export class CustomMessagesBuilder {
     // POUCAS ESTÃO CORRETAS, AJUSTAR AINDA!!!!!!!!
 
     public firstMessageRecommendations(bio: string): string {
-        return `Acabei de chegar na cidade de são paulo e não conheço nada aqui, me dê 5 sugestões de mensagens para mandar para puxar conversa com uma menina no tinder? Responda no formato ["sugestão 1", "sugestão 2", "sugestão 3","sugestão 4","sugestão 5"]. Uma breve descrição sobre mim: ${bio}`
+        return `Acabei de chegar na cidade de buenos aires e não conheço nada aqui, me dê 5 sugestões de mensagens para mandar para puxar conversa com uma menina no tinder? Responda no formato ["sugestão 1", "sugestão 2", "sugestão 3","sugestão 4","sugestão 5"]. Uma breve descrição sobre mim: ${bio}`
     }
 
     public bioBasedMessage(bio: string, matchBio: string) {

@@ -23,4 +23,14 @@ export class ChatGPT implements IAIProvider {
     )
     return completion.data;
   }
+
+  async draw(): Promise<any> {
+    let response = await this.openai.createImage({
+      prompt: "uma imagem relacionando one piece e maplestory",
+      n: 1,
+      size: "1024x1024"
+    })
+    console.log(response)
+    return response
+  }
 }
