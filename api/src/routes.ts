@@ -37,12 +37,12 @@ export class Routes {
 
         routes.get('/newMatches', authMiddleware, async (req: Request, res: Response) => {
             try {
-                const { minDistance = '0', maxDistance = '99999' } = req.query
+                const { minDistance = '0', maxDistance = '99999', hasBio = true } = req.query
 
                 const { socialMediaService } = dependencies;
                 const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;//req.headers['x-auth-token'] as string;
 
-                const newMatches = await socialMediaService.getNewMatches(session, parseInt((minDistance as string)), parseInt((maxDistance as string)))
+                const newMatches = await socialMediaService.getNewMatches(session, parseInt((minDistance as string)), parseInt((maxDistance as string)), (hasBio as boolean))
 
                 res.send(newMatches);
             } catch (err: any) {
