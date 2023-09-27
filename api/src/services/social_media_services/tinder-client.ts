@@ -58,9 +58,11 @@ export class TinderClient implements ISocialMediaService {
       return []
     }
   }
-
+  // todo - chang has bio to be true, false or undefined
+  // todo change brazilian filter to be true, false or undefined and add variable 
   async getNewMatches(session: string, minDistance = 0, maxDistance = 99999, hasBio = true): Promise<any> { // Array<ITinderMatchResponse>
     const url = this.baseUrl + '/v2/matches?locale=en&count=100&message=0&is_tinder_u=false'
+
     try {
       const res = await axios.get(url, { headers: { ...this.defaultHeaders, "x-auth-token": session } });
       const newMatches: Array<any> = [];
@@ -76,6 +78,10 @@ export class TinderClient implements ISocialMediaService {
         } else if (hasBio && user.bio && user.bio.length === 0) {
           shouldSkip = true;
         }
+        // if (!user.bio.includes("🇧🇷")) {
+        //   shouldSkip = true
+        // }
+        //todo - move o distance para o padrãod o should skip e limpar o codigo
         if (distanceKm > minDistance && distanceKm < maxDistance && !shouldSkip) {
           newMatches.push({
             id: match.person._id,
