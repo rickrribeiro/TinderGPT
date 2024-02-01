@@ -3,7 +3,7 @@ version: "3"
 services:
 
   api:
-    container_name: tindergpt-api-2
+    container_name: tindergpt-api
     
     build:
       context: ./api
@@ -19,7 +19,7 @@ services:
     # command: npm start
 
   front:
-    container_name: tindergpt-front-2
+    container_name: tindergpt-front
     
     build:
       context: ./front

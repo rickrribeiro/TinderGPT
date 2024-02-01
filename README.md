@@ -15,15 +15,15 @@ Dependencies:
 ## run with docker: 
     docker-compose up -d
 ## run without docker: 
-installing & setup:
+### installing & setup:
 
 - access front and api and run: npm install
 
-run api:
+### run api:
 
 - npm run start:dev
 
-run front:
+### run front:
 
 - npm start
 
