@@ -5,11 +5,19 @@ TinderGPT is a project focused on enhancing the user experience of the popular d
 Dependencies:
 
 - redis (not implemented yet)
+- docker (optional)
 - node 18
+## configure envs
+- access api/src/config
+- create a file config.ts using config.sample.ts as example
+- fill the file with your credentials
 
+## run with docker: 
+    docker-compose up -d
+## run without docker: 
 installing & setup:
 
-- npm install
+- access front and api and run: npm install
 
 run api:
 
@@ -20,3 +28,8 @@ run front:
 - npm start
 
 slides: https://docs.google.com/presentation/d/1jc-Sn5QFhB6A-trDUiPL3lmIzHPZsH3aYnciAhqrELg/edit?usp=sharing
+
+next:
+- enable/disable chatgpt
+- make auth from the application
+- login page

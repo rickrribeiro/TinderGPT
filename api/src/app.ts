@@ -4,7 +4,7 @@ import { DependencyContainer } from './dependency-container';
 import cors from 'cors'
 import { Routes } from './routes'
 const port = 3001;
-
+const host = '127.0.0.1'
 // Without provider selection for now because there is only one, but remember to add later
 const dependencyContainer = DependencyContainer.getInstance({
   aiProvider: AIProvidersEnum.CHATGPT,
@@ -17,7 +17,7 @@ app.use(express.json())
 app.use(cors())
 
 app.use('/', routes);
-
+// app.listen(port, host, () => {
 app.listen(port, () => {
-  console.log(`🔥[TinderGPT]🤖: Server is running at http://localhost:${port}`);
+  console.log(`🔥[TinderGPT]🤖: Server is running at http://${host}:${port}`);
 });

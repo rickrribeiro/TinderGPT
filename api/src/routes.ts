@@ -114,19 +114,31 @@ export class Routes {
         });
 
         routes.get('/recommendations/newmatches', async (req: Request, res: Response) => {
-            const customMessagesBuilder = new CustomMessagesBuilder();
-            const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
-            const { aiProvider, socialMediaService } = dependencies;
-            const bio = await socialMediaService.getMyBio(session)
-            const resps: any = await aiProvider.ask(customMessagesBuilder.firstMessageRecommendations(bio));
-            res.send(resps.choices[0].message.content)
+            try {
+
+                const customMessagesBuilder = new CustomMessagesBuilder();
+                const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+                const { aiProvider, socialMediaService } = dependencies;
+                const bio = await socialMediaService.getMyBio(session)
+                const resps: any = await aiProvider.ask(customMessagesBuilder.firstMessageRecommendations(bio));
+                res.send(resps.choices[0].message.content)
+            } catch (err) {
+                console.log(err);
+                res.send([])
+            }
         });
 
         routes.get('/mybio', async (req: Request, res: Response) => {
-            const { socialMediaService } = dependencies;
-            const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
-            const bio = await socialMediaService.getMyBio(session)
-            res.send(bio);
+            try {
+
+                const { socialMediaService } = dependencies;
+                const session = config.SOCIAL_MEDIA_SERVICES.TINDER.SESSION;
+                const bio = await socialMediaService.getMyBio(session)
+                res.send(bio);
+            } catch (err) {
+                console.log(err);
+                res.send('')
+            }
         });
 
         routes.get('/recommendations/match/:id', authMiddleware, async (req: Request, res: Response) => {

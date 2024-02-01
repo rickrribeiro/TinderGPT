@@ -1,0 +1,35 @@
+version: "3"
+
+services:
+
+  api:
+    container_name: tindergpt-api-2
+    
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    # volumes:
+    #   - ./api:/src/app
+    ports:
+      - "3001:3001"
+    working_dir: /usr/src/app
+    # environment:
+    #   - TINDER_SESSION=${TINDER_SESSION}
+
+    # command: npm start
+
+  front:
+    container_name: tindergpt-front-2
+    
+    build:
+      context: ./front
+      dockerfile: Dockerfile
+    # volumes:
+    #   - ./front:/src/app
+    ports:
+      - "3000:3000"
+    working_dir: /usr/src/app
+    # environment:
+    #   - TINDER_SESSION=${TINDER_SESSION}
+
+    # command: npm start
