@@ -6,7 +6,7 @@ Dependencies:
 
 - redis (not implemented yet)
 - docker (optional)
-- node 18
+- node 18 (if not running on docker)
 ## configure envs
 - access api/src/config
 - create a file config.ts using config.sample.ts as example
